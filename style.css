@@ -21,11 +21,15 @@ button {
     align-items: center;
     justify-content: flex-end;
     width: 100%;
-    font-size: 30px;
     padding: 5px;
     margin: 10px;
     border-color: black;
     border-style: solid;
+}
+
+.display-output {
+    width: 100%;
+    font-size: 25px;
 }
 
 .calc-container {
