@@ -9,35 +9,36 @@
 <body>
     <div class="calc-container">
         <div class="display-container">
-            <input type="text" id="display" class="display-output">
+            <span class="display-output" id="displayOutput"></span>
         </div>
         <div class="button-container">
-
-            <div class="num-button-container">
+            <div class="number-button-container">
                 <div class="number-button-row">
-                    <button value="9" onclick="display('9')">7</button>
-                    <button value="8" onclick="display('8')">8</button>
-                    <button value="7" onclick="display('7')">9</button>
+                    <button onclick="display('7')">7</button>
+                    <button onclick="display('8')">8</button>
+                    <button onclick="display('9')">9</button>
                 </div>
                 <div class="number-button-row">
-                    <button value="6" onclick="display('6')">4</button>
-                    <button value="5" onclick="display('5')">5</button>
-                    <button value="4" onclick="display('4')">6</button>
+                    <button onclick="display('4')">4</button>
+                    <button onclick="display('5')">5</button>
+                    <button onclick="display('6')">6</button>
                 </div>
                 <div class="number-button-row">
-                    <button value="3" onclick="display('3')">3</button>
-                    <button value="2" onclick="display('2')">2</button>
-                    <button value="1" onclick="display('1')">1</button>
+                    <button onclick="display('3')">3</button>
+                    <button onclick="display('2')">2</button>
+                    <button onclick="display('1')">1</button>
                 </div>
                 <div class="number-button-row">
-                    <button>0</button>
+                    <button onclick="display('0')">0</button>
+                    <button onclick="display('.')">.</button>
+                    <button class="button-equals" onclick="equals()">=</button>
                 </div>
             </div>
             <div class="operator-button-container">
-                <button value="+" onclick="display('+')">+</button>
-                <button value="-" onclick="display('-')">-</button>
-                <button value="*" onclick="display('*')">*</button>
-                <button value="/" onclick="display('/')">/</button>
+                <button class="button-operator" onclick="display('+')">+</button>
+                <button class="button-operator" onclick="display('-')">-</button>
+                <button class="button-operator" onclick="display(`*`)">*</button>
+                <button class="button-operator" onclick="display('/')">/</button>
             </div>
         </div>
     </div>
