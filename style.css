@@ -12,7 +12,9 @@ button {
     width: 60px;
     height: 70px;
     font-size: 30px;
-    margin: 0 5px 5px 0;justify-content: flex-end;
+    margin: 0 5px 5px 0;
+    border-color: black;
+    border-width: 5px;
 }
 
 .calc-container {
@@ -58,6 +60,10 @@ button {
     flex-direction: column;
     align-content: center;
     justify-content: center;
+}
+
+.button-clear-memory {
+    background-color: rgb(216, 214, 214);
 }
 
 .operator-button-container {

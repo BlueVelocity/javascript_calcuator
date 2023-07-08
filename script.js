@@ -8,8 +8,12 @@ let resume = '';
 inputDisplay = '';
 
 function display(input) {
-    inputDisplay += input;
-    document.getElementById('displayOutput').innerHTML = inputDisplay;
+    if ( inputDisplay.length >= 25) {
+        alert('Too many numbers. Please complete operation or clear field');
+    } else {
+        inputDisplay += input;
+        document.getElementById('displayOutput').innerHTML = inputDisplay;
+    }
 }
 
 function displayOperator(input) {
@@ -54,24 +58,50 @@ function equals() {
 
 function additionPrintToDisplay(num1, num2) {
     let answer = undefined;
-    answer = num1 + num2;
+    answer = Number.parseInt(num1) + Number.parseInt(num2);
+    inputDisplay = '';
     document.getElementById('displayOutput').innerHTML = answer;
+    clearMemoryLite()
 }
 
 function subtractionPrintToDisplay(num1, num2) {
     let answer = undefined;
     answer = num1 - num2;
+    inputDisplay = '';
     document.getElementById('displayOutput').innerHTML = answer;
+    clearMemoryLite()
 }
 
 function multiplicationPrintToDisplay(num1, num2) {
     let answer = undefined;
     answer = num1 * num2;
+    inputDisplay = '';
     document.getElementById('displayOutput').innerHTML = answer;
+    clearMemoryLite()
 }
 
 function divisionPrintToDisplay(num1, num2) {
     let answer = undefined;
     answer = num1 / num2;
+    inputDisplay = '';
     document.getElementById('displayOutput').innerHTML = answer;
+    clearMemoryLite()
+}
+
+function clearMemory() {
+    operatorToggle = true;
+    numberOne = '';
+    numberTwo = '';
+    operator = '';
+    resume = '';
+    inputDisplay = '';
+    document.getElementById('displayOutput').innerHTML = "";
+}
+
+function clearMemoryLite() {
+    operatorToggle = true;
+    operator = '';
+    resume = '';
+    numberOne = '';
+    numberTwo = '';
 }
