@@ -36,10 +36,11 @@ function displayOperator(input) {
 
 //called when the equal button is pressed
 function equals() {
+    
     //converts input to array to be read by check loops
     inputArray = inputDisplay.split('');
 
-
+    //cycles through first number set, identifies operator
     for (i = 0; i < inputArray.length; i++) {
         if (/\d+/.test(inputArray[i])) {
             numberOne += inputArray[i];
@@ -53,10 +54,18 @@ function equals() {
     //cycles through second number set
     for (i = resume; i < inputArray.length; i++) {
         numberTwo += inputArray[i];
+        if (numberTwo === '') {
+            numberTwo = '0';
+        }
     }
 
     //stores history for use before equals operator in printToHistoryFunction
-    tempHistoryInput = inputDisplay;
+    tempHistoryInput =  inputDisplay
+    if (numberOne === '') {
+        tempHistoryInput =  '0' + inputDisplay;
+    } else if ( numberTwo === '') {
+        tempHistoryInput = inputDisplay + '0';
+    }
 
     //checks operator in use and prints to display, soft resets memory
     switch(operator) {
@@ -81,10 +90,18 @@ function equals() {
 
 //output calculation, will clear memory upon completion
 function output() {
-    printToHistory()
+    printToHistory();
     inputDisplay = '';
     document.getElementById('displayOutput').innerHTML = answer;
     clearMemoryLite()
+}
+
+//prints display + answer to history output
+function printToHistory() {
+    newHistoryElement.textContent = tempHistoryInput + ' = ' + answer;
+    historyElement.appendChild(newHistoryElement);
+    historyCounter += 1 ;
+    console.log(`historyCounter = ${historyCounter}`)
 }
 
 //clears non-display memory
@@ -103,12 +120,4 @@ function clearMemory() {
     inputDisplay = '';
     tempHistoryInput = undefined;
     document.getElementById('displayOutput').innerHTML = "";
-}
-
-//prints display + answer to history output
-function printToHistory() {    
-    newHistoryElement.textContent = tempHistoryInput + ' = ' + answer;
-    historyElement.appendChild(newHistoryElement);
-    historyCounter += 1 ;
-    console.log(historyCounter);
 }
