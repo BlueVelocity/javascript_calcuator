@@ -1,9 +1,5 @@
 let displayElement = document.getElementById('')
-let operatorToggle = true;
-let numberOne = '';
-let numberTwo = '';
-let operator = '';
-let resume = '';
+let previousInput = '';
 let answer = undefined;
 let tempHistoryInput = undefined;
 let historyCounter = 0;
@@ -11,110 +7,129 @@ let historyCounter = 0;
 inputDisplay = '';
 
 let historyElement = document.getElementById('output-history-list');
-let newHistoryElement = document.createElement('li');
+let newHistoryElement = document.createElement('span');
 
-//limits the display input to 25 characters
-//will prompt the user-agent when character limit is reached
+// displays a number character within the display
+// limits the display input to 25 characters, will prompt the user-agent when character limit is reached
 function display(input) {
     if ( inputDisplay.length >= 25) {
-        alert('Too many numbers. Please complete operation or clear field');
+        alert('Calculator poorly programmed, memory unstable. Please complete operation or clear field');
     } else {
         inputDisplay += input;
+        previousInput = input;
         document.getElementById('displayOutput').innerHTML = inputDisplay;
+        operatorToggle = true
     }
 }
 
-//used to update the display when an input is selected
-//limits the operator count to one
+// used to update the display when an operator is selected
 function displayOperator(input) {
     if (operatorToggle == true) {
         inputDisplay += input;
         document.getElementById('displayOutput').innerHTML = inputDisplay;
         operatorToggle = false;
-    } 
+    }
 }
 
-//called when the equal button is pressed
+// called when the equal button is pressed
 function equals() {
     
-    //converts input to array to be read by check loops
-    inputArray = inputDisplay.split('');
+    // converts input to array to be read by check loops
+    let resume = undefined;
+    let inputArray = inputDisplay.split('');
+    let calcArray = [];
+    let tempNumber = '';
+    let tempOperator = '';
 
-    //cycles through first number set, identifies operator
+    //checks for no value and start and end of input, if so, insert a '0' into array
+    if (inputArray[0] == '+' || inputArray[0] == '-' || inputArray[0] == '*' || inputArray[0] == '/') {
+        inputArray.unShift('0');
+    }
+
+    if (inputArray[inputArray.length - 1] == '+' || inputArray[inputArray.length - 1] == '-' || inputArray[inputArray.length - 1] == '*' || inputArray[inputArray.length - 1] == '/') {
+        inputArray.push('0');
+    }
+
+    //creates array from input, separates integers and operators relationally within the array
     for (i = 0; i < inputArray.length; i++) {
         if (/\d+/.test(inputArray[i])) {
-            numberOne += inputArray[i];
+            tempNumber += inputArray[i];
         } else {
             resume = i + 1;
-            operator = inputArray[i];
-            break;
+            tempOperator = inputArray[i];
+            calcArray.push(`${tempNumber}`, `${tempOperator}`);
+            tempNumber = '';
+            tempOperator = '';
+        }
+    }
+    calcArray.push(`${tempNumber}`);
+
+    // computational logic following order of operations
+    for (i= 0; i < calcArray.length; i++) {
+        if (calcArray[i] === '*' || calcArray[i] === '/') {
+            let output = null;
+            if (calcArray[i] === '/') {
+                output = calcArray[i-1] / calcArray[i+1];
+            } else {
+                output = calcArray[i-1] * calcArray[i+1];
+            }
+            calcArray.splice(i+2, 0, output);
+            calcArray.splice(i-1, 3);
+            i -= 2;
         }
     }
 
-    //cycles through second number set
-    for (i = resume; i < inputArray.length; i++) {
-        numberTwo += inputArray[i];
-        if (numberTwo === '') {
-            numberTwo = '0';
+    for (i=0; i < calcArray.length; i++) {
+        if (calcArray[i] === '+' || calcArray[i] === '-') {
+            let output = null;
+            if (calcArray[i] === '+') {
+                output = Number.parseInt(calcArray[i-1]) + Number.parseInt(calcArray[i+1]);
+            } else {
+                output = calcArray[i-1] - calcArray[i+1];
+            }
+            calcArray.splice(i+2, 0, output);
+            calcArray.splice(i-1, 3);
+            i -= 2;
         }
     }
 
-    //stores history for use before equals operator in printToHistoryFunction
-    tempHistoryInput =  inputDisplay
-    if (numberOne === '') {
-        tempHistoryInput =  '0' + inputDisplay;
-    } else if ( numberTwo === '') {
-        tempHistoryInput = inputDisplay + '0';
-    }
+    //converts array to int, then to string
+    let output = calcArray[0];
+    answer = output.toString();
 
-    //checks operator in use and prints to display, soft resets memory
-    switch(operator) {
-        case '+' :
-            answer = Number.parseInt(numberOne) + Number.parseInt(numberTwo);
-            output();
-            break;
-        case '-' :
-            answer = numberOne - numberTwo;
-            output();
-            break;
-        case '*' :
-            answer = numberOne * numberTwo;
-            output();
-            break;
-        case '/' :
-            answer = numberOne / numberTwo;
-            output();
-            break;
-    }
+    // stores history for use before equals operator in printToHistoryFunction
+    tempHistoryInput =  inputDisplay;
+
+    outputToDisplay();
 }
 
-//output calculation, will clear memory upon completion
-function output() {
+// output calculation, will clear memory upon completion
+function outputToDisplay() {
     printToHistory();
     inputDisplay = '';
     document.getElementById('displayOutput').innerHTML = answer;
     clearMemoryLite()
 }
 
-//prints display + answer to history output
+// prints display + answer to history output
 function printToHistory() {
+    historyElement.parentNode.insertBefore(newHistoryElement, historyElement.nextSibling)
     newHistoryElement.textContent = tempHistoryInput + ' = ' + answer;
-    historyElement.appendChild(newHistoryElement);
     historyCounter += 1 ;
     console.log(`historyCounter = ${historyCounter}`)
 }
 
-//clears non-display memory
+// clears non-display memory
 function clearMemoryLite() {
-    operatorToggle = true;
-    operator = '';
     resume = '';
     numberOne = '';
     numberTwo = '';
     answer = '';
+    startNull = false;
+    endNull = true;
 }
 
-//clears all memory
+// clears all memory
 function clearMemory() {
     clearMemoryLite();
     inputDisplay = '';
