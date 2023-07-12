@@ -1,10 +1,10 @@
 let displayElement = document.getElementById('')
+let inputDisplay = '';
 let previousInput = '';
+let operatorToggle = false;
 let answer = undefined;
 let tempHistoryInput = undefined;
 let historyCounter = 0;
-
-inputDisplay = '';
 
 let historyElement = document.getElementById('output-history-list');
 let newHistoryElement = document.createElement('span');
@@ -12,7 +12,7 @@ let newHistoryElement = document.createElement('span');
 // displays a number character within the display
 // limits the display input to 25 characters, will prompt the user-agent when character limit is reached
 function display(input) {
-    if ( inputDisplay.length >= 25) {
+    if (inputDisplay.length >= 25) {
         alert('Calculator poorly programmed, memory unstable. Please complete operation or clear field');
     } else {
         inputDisplay += input;
@@ -43,7 +43,7 @@ function equals() {
 
     //checks for no value and start and end of input, if so, insert a '0' into array
     if (inputArray[0] == '+' || inputArray[0] == '-' || inputArray[0] == '*' || inputArray[0] == '/') {
-        inputArray.unShift('0');
+        inputArray.unshift('0');
     }
 
     if (inputArray[inputArray.length - 1] == '+' || inputArray[inputArray.length - 1] == '-' || inputArray[inputArray.length - 1] == '*' || inputArray[inputArray.length - 1] == '/') {
@@ -98,25 +98,24 @@ function equals() {
     answer = output.toString();
 
     // stores history for use before equals operator in printToHistoryFunction
-    tempHistoryInput =  inputDisplay;
+    console.log(inputArray);
+    tempHistoryInput =  inputArray.join();
+    console.log(tempHistoryInput);
+
+    // prints display + answer to history output
+    historyElement.parentNode.insertBefore(newHistoryElement, historyElement.nextSibling)
+    newHistoryElement.textContent = inputArray.join('') + ' = ' + answer;
+    historyCounter += 1 ;
+    console.log(`historyCounter = ${historyCounter}`)
 
     outputToDisplay();
 }
 
 // output calculation, will clear memory upon completion
 function outputToDisplay() {
-    printToHistory();
     inputDisplay = '';
     document.getElementById('displayOutput').innerHTML = answer;
     clearMemoryLite()
-}
-
-// prints display + answer to history output
-function printToHistory() {
-    historyElement.parentNode.insertBefore(newHistoryElement, historyElement.nextSibling)
-    newHistoryElement.textContent = tempHistoryInput + ' = ' + answer;
-    historyCounter += 1 ;
-    console.log(`historyCounter = ${historyCounter}`)
 }
 
 // clears non-display memory
