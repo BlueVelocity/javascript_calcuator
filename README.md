@@ -1,4 +1,4 @@
-# javascript_calcuator  
+# javascript_calculator  
   
 Basic calculator created using HTML, CSS & Javascript that can perform simple  
 addition, subtraction, multiplication, & division operators on multiple inputs  
